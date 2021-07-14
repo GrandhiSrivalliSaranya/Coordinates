@@ -1,0 +1,10 @@
+img {
+  float: left;
+}
+table {
+  float: top;
+}
+.xytable {
+  margin-right: 200px;
+  float: right;
+}

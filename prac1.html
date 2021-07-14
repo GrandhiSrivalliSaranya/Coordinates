@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="cordinate system.css">
+</head>
+
+<body>
+
+    <canvas id="myCanvas" onclick="showCoords(event)" width="600" height="600" style="border:1px solid #d3d3d3;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <div class="xytable">
+        <table id="table" border="1">
+            <thead id="table-head">
+                <tr>
+                    <th>X Coordinate</th>
+                    <th>Y Coordinate</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+
+
+    <script>
+        //var canvas = document.getElementById("myCanvas");
+        //var ctx = canvas.getContext("2d");
+        var grid_size = 20;
+
+        var x_axis_starting_point = { number: 1, suffix: '' };
+        var y_axis_starting_point = { number: 1, suffix: '' };
+
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var canvas_width = canvas.width;
+        var canvas_height = canvas.height;
+        var x_axis_distance_grid_lines = ((canvas_height / grid_size) / 2);
+        var y_axis_distance_grid_lines = ((canvas_width / grid_size) / 2);
+
+        var num_lines_x = Math.floor(canvas_height / grid_size);
+        //document.write(num_lines_x);
+        var num_lines_y = Math.floor(canvas_width / grid_size);
+
+
+        ctx.beginPath();
+        ctx.lineWidth1;
+        ctx.strokeStyle = "#000000";
+        ctx.moveTo(0, canvas_width / 2);
+        ctx.lineTo(canvas_height, canvas_width / 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.lineWidth1;
+        ctx.strokeStyle = "#000000";
+        ctx.moveTo(canvas_height / 2, 0);
+        ctx.lineTo(canvas_height / 2, canvas_width);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(canvas_height / 2, canvas_width / 2);
+        ctx.lineTo(canvas_height / 2 + 1, canvas_width / 2 + 1);
+        ctx.stroke();
+        /*for (var i = 0; i <= num_lines_x; i++) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            if (i == x_axis_distance_grid_lines) {
+                ctx.strokeStyle = "#000000";
+            }
+            else
+                ctx.strokeStyle = "#ffffff";
+
+            //if (i == num_lines_x) {
+            //    ctx.moveTo(0, grid_size * i);
+             //   ctx.lineTo(canvas_width, grid_size * i);
+            //}
+            //else {
+                ctx.moveTo(0, grid_size * i);
+                ctx.lineTo(canvas_width, grid_size * i);
+            //}
+            ctx.stroke();
+        }*/
+        /*
+       for (i = 0; i <= num_lines_y; i++) {
+           ctx.beginPath();
+           ctx.lineWidth = 1;
+           if (i == y_axis_distance_grid_lines)
+               ctx.strokeStyle = "#000000";
+           else
+               ctx.strokeStyle = "#1c00ff00";
+
+           if (i == num_lines_y) {
+               ctx.moveTo(grid_size * i, 0);
+               ctx.lineTo(grid_size * i, canvas_height);
+           }
+           else {
+              ctx.moveTo(grid_size * i + 0.5, 0);
+               ctx.lineTo(grid_size * i + 0.5, canvas_height);
+           }
+           ctx.stroke();
+       }*/
+        for (i = 0; i < (num_lines_y - y_axis_distance_grid_lines); i++) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000";
+
+            // Draw a tick mark 6px long (-3 to 3)
+            ctx.moveTo((y_axis_distance_grid_lines + i) * grid_size + 0.5, (x_axis_distance_grid_lines) * grid_size - 3);
+            ctx.lineTo((y_axis_distance_grid_lines + i) * grid_size + 0.5, (x_axis_distance_grid_lines) * grid_size + 3);
+            ctx.stroke();
+
+            // Text value at that point
+            ctx.font = '9px Arial';
+            ctx.textAlign = 'start';
+            ctx.fillText(x_axis_starting_point.number * i + x_axis_starting_point.suffix, (y_axis_distance_grid_lines + i) * grid_size - 2, x_axis_distance_grid_lines * grid_size + 15);
+        }
+
+        // Ticks marks along the negative X-axis
+        for (i = 1; i < (y_axis_distance_grid_lines); i++) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000";
+
+            // Draw a tick mark 6px long (-3 to 3)
+            ctx.moveTo(i * grid_size + 0.5, (x_axis_distance_grid_lines) * grid_size - 3);
+            ctx.lineTo((i) * grid_size + 0.5, (x_axis_distance_grid_lines) * grid_size + 3);
+            ctx.stroke();
+
+            // Text value at that point
+            ctx.font = '9px Arial';
+            ctx.textAlign = 'end';
+            ctx.fillText(-(-x_axis_starting_point.number * i + y_axis_distance_grid_lines) + x_axis_starting_point.suffix, grid_size * i, x_axis_distance_grid_lines * grid_size + 15);
+        }
+
+        for (i = 0; i < (num_lines_x - x_axis_distance_grid_lines); i++) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000";
+
+            // Draw a tick mark 6px long (-3 to 3)
+            ctx.moveTo((y_axis_distance_grid_lines) * grid_size - 3, (i) * grid_size + 0.5);
+            ctx.lineTo((y_axis_distance_grid_lines) * grid_size + 3, (i) * grid_size + 0.5);
+            ctx.stroke();
+
+            // Text value at that point
+            ctx.font = '9px Arial';
+            ctx.textAlign = 'start';
+            ctx.fillText(y_axis_starting_point.number * i + y_axis_starting_point.suffix, (y_axis_distance_grid_lines) * grid_size + 15, (x_axis_distance_grid_lines - i) * grid_size);
+        }
+
+        for (i = 0; i < (num_lines_x - x_axis_distance_grid_lines); i++) {
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#000000";
+
+            // Draw a tick mark 6px long (-3 to 3)
+            ctx.moveTo((y_axis_distance_grid_lines) * grid_size - 3, (i + x_axis_distance_grid_lines) * grid_size + 0.5);
+            ctx.lineTo((y_axis_distance_grid_lines) * grid_size + 3, (i + x_axis_distance_grid_lines) * grid_size + 0.5);
+            ctx.stroke();
+
+            // Text value at that point
+            ctx.font = '9px Arial';
+            ctx.textAlign = 'start';
+            ctx.fillText(-(y_axis_starting_point.number * i) + y_axis_starting_point.suffix, (y_axis_distance_grid_lines) * grid_size + 15, (x_axis_distance_grid_lines + i) * grid_size);
+        }
+
+
+
+
+
+        function showCoords(event) {
+            var my_canvas = document.getElementById("myCanvas");
+            var top = 0;
+            var left = 0;
+            while (my_canvas) {
+                top += my_canvas.offsetTop;
+                left += my_canvas.offsetLeft;
+                my_canvas = my_canvas.offsetParent;
+            }
+            var mouseX = event.clientX - left + window.pageXOffset;
+            var mouseY = event.clientY - top + window.pageYOffset;
+
+            // Add the following 3 lines to scale the mouse coordinates to the
+            // canvas resolution
+            const bounds = myCanvas.getBoundingClientRect();
+            mouseX = (mouseX / bounds.width) * myCanvas.width;
+            mouseY = (mouseY / bounds.height) * myCanvas.height;
+            ctx.beginPath();
+            ctx.lineWidth1;
+            ctx.strokeStyle = "#ff0000";
+            ctx.moveTo(mouseX, mouseY);
+            ctx.lineTo(mouseX + 2, mouseY + 2);
+            ctx.stroke();
+
+
+
+            //return { x: canvasX, y: canvasY }
+
+            var tableBody = document.getElementById("table-body");
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var row = tableBody.insertRow(-1);
+
+            var x = ((mouseX - canvas_width / 2) / (grid_size)).toFixed(3);
+            var y = ((mouseY - canvas_height / 2) / (grid_size)).toFixed(3);
+
+
+            td1.innerHTML = x;
+            td2.innerHTML = -y;
+
+            row.appendChild(td1);
+            row.appendChild(td2);
+
+            tableBody.appendChild(row);
+        }
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
